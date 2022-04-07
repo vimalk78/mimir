@@ -255,7 +255,7 @@ func (a *API) RegisterDistributor(d *distributor.Distributor, pushConfig distrib
 			}
 		}
 
-		var bfReq distributor.StartBackfillRequest
+		var bfReq distributor.BackfillRequest
 		decoder := json.NewDecoder(r.Body)
 		if err := decoder.Decode(&bfReq); err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -275,7 +275,7 @@ func (a *API) RegisterDistributor(d *distributor.Distributor, pushConfig distrib
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		if _, err := fmt.Fprintf(w, `{token: "%s"}`, token); err != nil {
+		if _, err := fmt.Fprintf(w, `{"token": "%s"}`, token); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}), true, false, "POST")

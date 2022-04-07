@@ -859,8 +859,8 @@ func (d *Distributor) PushWithCleanup(ctx context.Context, req *mimirpb.WriteReq
 	return &mimirpb.WriteResponse{}, firstPartialErr
 }
 
-// StartBackfillRequest contains parameters for starting a metrics backfill session.
-type StartBackfillRequest struct {
+// BackfillRequest contains parameters for making a backfill request.
+type BackfillRequest struct {
 	// TenantID is the ID of the tenant for which to backfill.
 	TenantID int `json:"tenantId"`
 	// NumBlocks is the number of blocks that should be backfilled.
@@ -868,8 +868,9 @@ type StartBackfillRequest struct {
 }
 
 // StartBackfill requests the starting of a backfill session based on parameters from req.
-func (d *Distributor) StartBackfill(ctx context.Context, req StartBackfillRequest) (string, error) {
+func (d *Distributor) StartBackfill(ctx context.Context, req BackfillRequest) (string, error) {
 	token := uuid.New()
+	level.Warn(d.log).Log("msg", "received backfill request", "tenantId", req.TenantID)
 	// TODO: Create session document in staging object storage bucket.
 	return token.String(), nil
 }

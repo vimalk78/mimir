@@ -143,7 +143,7 @@ func (r *MimirClient) doRequest(path, method string, payload []byte) (*http.Resp
 
 	err = checkResponse(resp)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "%s request to %s failed", req.Method, req.URL.String())
 	}
 
 	return resp, nil
